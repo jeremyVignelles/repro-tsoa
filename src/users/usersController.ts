@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Path,
   Post,
   Query,
@@ -9,7 +10,7 @@ import {
   SuccessResponse,
 } from "tsoa";
 import { User } from "./user";
-import { UsersService, UserCreationParams } from "./usersService";
+import { UsersService, UserCreationParams, UserPatchParams } from "./usersService";
 
 @Route("users")
 export class UsersController extends Controller {
@@ -28,6 +29,15 @@ export class UsersController extends Controller {
   ): Promise<void> {
     this.setStatus(201); // set return status 201
     new UsersService().create(requestBody);
+    return;
+  }
+
+  @Patch("{userId}")
+  public async patchUser(
+    @Path() userId: number,
+    @Body() requestBody: UserPatchParams
+  ): Promise<void> {
+    new UsersService().patchUser(userId, requestBody);
     return;
   }
 }
